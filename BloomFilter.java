@@ -6,7 +6,7 @@ public class BloomFilter {
   private int k; // ハッシュの個数
 
   public BloomFilter(int m, int k) {
-    this.bfindex = Long.MIN_VALUE;
+    this.bfindex = 0;
     this.m = m;
     this.k = k;
   }
@@ -35,13 +35,13 @@ public class BloomFilter {
    */
   public boolean contain(String keyword) {
     try {
-      long search_index = Long.MIN_VALUE;
+      long search_index = 0;
       for (int i = 0; i < k; i++) {
         int hash_value = HashGenerator.generate((i + keyword).getBytes());
         int adjust_hash_value = Math.abs(hash_value) % m;
         search_index = search_index | pow(2, adjust_hash_value);
       }
-      return (bfindex & search_index) != Long.MIN_VALUE;
+      return (bfindex & search_index) == search_index;
     } catch (Exception e) {
       e.printStackTrace();
     }
