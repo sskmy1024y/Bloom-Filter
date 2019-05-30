@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * ファイルの名前とbfindexを格納するクラス
@@ -14,22 +15,21 @@ class FileSet {
    * ファイル名の登録と、bfindexの登録
    * 
    * @param filepath
+   * @throws NoSuchAlgorithmException
    */
-  public FileSet(String filepath) {
-    try {
-      File file = new File(filepath);
+  public FileSet(String filepath) throws IOException, NoSuchAlgorithmException {
+    File file = new File(filepath);
+    registerBFilter(file);
+  }
 
-      this.filename = file.getName(); // ファイル名を登録
-      byte[] filebyte = Files.readAllBytes(file.toPath()); // ファイルのByte配列を取得
-
-      // bfindexの登録
-      this.bFilter = new BloomFilter(64, 3);
-      for (String keyword : Keywords.containKeywords(filebyte)) {
-        this.bFilter.add(keyword);
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  /**
+   * ファイル名の登録と、bfindexの登録
+   * 
+   * @param file
+   * @throws NoSuchAlgorithmException
+   */
+  public FileSet(File file) throws IOException, NoSuchAlgorithmException {
+    registerBFilter(file);
   }
 
   /**
@@ -46,9 +46,25 @@ class FileSet {
    * 
    * @param keyword
    * @return
+   * @throws NoSuchAlgorithmException
    */
-  public boolean contain(String keyword) {
+  public boolean contain(String keyword) throws NoSuchAlgorithmException {
     return this.bFilter.contain(keyword);
+  }
+
+  public String getBfIndexToHex() {
+    return this.bFilter.getBfIndexHex();
+  }
+
+  private void registerBFilter(File file) throws IOException, NoSuchAlgorithmException {
+    this.filename = file.getName(); // ファイル名を登録
+    byte[] filebyte = Files.readAllBytes(file.toPath()); // ファイルのByte配列を取得
+
+    // bfindexの登録
+    this.bFilter = new BloomFilter();
+    for (String keyword : Keywords.containKeywords(filebyte)) {
+      this.bFilter.add(keyword);
+    }
   }
 
 }

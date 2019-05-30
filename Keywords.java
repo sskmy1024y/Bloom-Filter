@@ -10,7 +10,7 @@ class Keywords {
    * 
    * @param filepath
    */
-  public static void input(String filepath) {
+  public static void input(String filepath) throws IOException {
 
     try (BufferedReader reader = new BufferedReader(
         new InputStreamReader(new FileInputStream(filepath), StandardCharsets.UTF_8));) {
@@ -20,7 +20,7 @@ class Keywords {
         keywords.add(str);
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new IOException();
     }
   }
 
@@ -33,10 +33,6 @@ class Keywords {
     return keywords;
   }
 
-  public static void print() {
-    System.out.println(keywords.toString());
-  }
-
   /**
    * 引数に与えられたファイル内に存在するキーワードのリストを返す
    * 
@@ -46,10 +42,20 @@ class Keywords {
   public static List<String> containKeywords(byte[] dest) {
     List<String> result = new ArrayList<>();
     for (String keyword : keywords) {
-      if (contain(dest, keyword.getBytes()))
+      if (contains(dest, keyword.getBytes()))
         result.add(keyword);
     }
     return result;
+  }
+
+  /**
+   * 入力されたキーワードが、キーワードリストに含まれるかどうか
+   * 
+   * @param keyword
+   * @return
+   */
+  public static boolean contains(String keyword) {
+    return keywords.contains(keyword);
   }
 
   /**
@@ -59,7 +65,7 @@ class Keywords {
    * @param dest
    * @return
    */
-  public static boolean contain(byte[] org, byte[] dest) {
+  public static boolean contains(byte[] org, byte[] dest) {
     if ((org == null) || (dest == null)) {
       throw new IllegalArgumentException("`org` or `dest` is null.");
     }
