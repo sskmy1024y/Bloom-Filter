@@ -20,7 +20,7 @@ public class BloomFilter {
   }
 
   /**
-   * ブルームフィルタにデータを追加
+   * ブルームフィルタにキーワードを追加
    * 
    * @param data
    * @throws NoSuchAlgorithmException
@@ -33,39 +33,21 @@ public class BloomFilter {
     }
   }
 
+  public long getBfIndex() {
+    return this.bfindex;
+  }
+
   /**
-   * ブルームフィルタにデータがあればtrue, なければfalseを返す。
+   * bfindexを作成してindexHexを取得する
    * 
-   * @param keyword
+   * @param word
+   * @return
    * @throws NoSuchAlgorithmException
    */
-  public boolean contain(String keyword) throws NoSuchAlgorithmException {
-    long search_index = 0;
-    for (int i = 0; i < k; i++) {
-      int hash_value = HashGenerator.generate((i + keyword).getBytes());
-      int adjust_hash_value = Math.abs(hash_value) % m;
-      search_index = search_index | pow(2, adjust_hash_value);
-    }
-    return (bfindex & search_index) == search_index;
-
-  }
-
-  /**
-   * 16進数に直したbfindexを返す
-   * 
-   * @return
-   */
-  public String getBfIndexHex() {
-    String hex = Long.toHexString(this.bfindex);
-    while (hex.length() < 16)
-      hex = "0" + hex;
-    return "0x" + hex;
-  }
-
-  public static String getBfIndex(String word) throws NoSuchAlgorithmException {
+  public static long getBfIndex(String keyword) throws NoSuchAlgorithmException {
     BloomFilter bf = new BloomFilter();
-    bf.add(word);
-    return bf.getBfIndexHex();
+    bf.add(keyword);
+    return bf.getBfIndex();
   }
 
   /**

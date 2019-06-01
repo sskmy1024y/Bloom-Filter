@@ -42,18 +42,12 @@ class FileSet {
   }
 
   /**
-   * bfindexのなかにキーワードが含まれるかどうか
+   * bfIndexを返す
    * 
-   * @param keyword
    * @return
-   * @throws NoSuchAlgorithmException
    */
-  public boolean contain(String keyword) throws NoSuchAlgorithmException {
-    return this.bFilter.contain(keyword);
-  }
-
-  public String getBfIndexToHex() {
-    return this.bFilter.getBfIndexHex();
+  public long getBfIndex() {
+    return this.bFilter.getBfIndex();
   }
 
   private void registerBFilter(File file) throws IOException, NoSuchAlgorithmException {

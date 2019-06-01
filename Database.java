@@ -34,22 +34,6 @@ class Database {
   }
 
   /**
-   * staticメソッド。Positiveなファイルのファイル名を返す
-   * 
-   * @param keyword
-   * @return
-   * @throws NoSuchAlgorithmException
-   */
-  public static List<String> getPositiveName(String keyword) throws NoSuchAlgorithmException {
-    List<String> result = new ArrayList<>();
-    for (FileSet fileSet : list) {
-      if (fileSet.contain(keyword))
-        result.add(fileSet.getFilename());
-    }
-    return result;
-  }
-
-  /**
    * データベースに登録されているファイル名を返す。
    * 
    * @return

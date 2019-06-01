@@ -61,9 +61,10 @@ public class Main {
       System.out.print("Search Keyword Input > ");
       String input = scanner.nextLine();
       scanner.close();
+      long inputIndex = BloomFilter.getBfIndex(input);
 
       System.out.println("\tInput keyword is : \t\t" + ANSI_CYAN + input + ANSI_RESET);
-      System.out.println("\tInput keyword index :\t\t" + ANSI_PURPLE + BloomFilter.getBfIndex(input) + ANSI_RESET);
+      System.out.println("\tInput keyword index :\t\t" + ANSI_PURPLE + ParseByte.toHexString(inputIndex) + ANSI_RESET);
 
       System.out.print("\tVerified in keyword list :\t");
       if (isValid = Keywords.contains(input)) {
@@ -77,12 +78,14 @@ public class Main {
       for (FileSet fileSet : Database.getList()) {
 
         // FileSetのbfindexの中に、キーワードが含まれているか
-        if (fileSet.contain(input)) {
+        if ((fileSet.getBfIndex() & inputIndex) == inputIndex) {
           System.out.println("\t" + ANSI_BLUE + fileSet.getFilename() + ANSI_RESET + " is " + ANSI_GREEN + "positive"
-              + ANSI_PURPLE + " (file index : " + fileSet.getBfIndexToHex() + ")" + ANSI_RESET);
+              + ANSI_PURPLE + " (file index : " + ParseByte.toHexString(fileSet.getBfIndex()) + " & word : "
+              + ParseByte.toHexString(fileSet.getBfIndex() & inputIndex) + ")" + ANSI_RESET);
         } else {
           System.out.println("\t" + ANSI_BLUE + fileSet.getFilename() + ANSI_RESET + " is " + ANSI_RED + "negative"
-              + ANSI_PURPLE + " (file index : " + fileSet.getBfIndexToHex() + ")" + ANSI_RESET);
+              + ANSI_PURPLE + " (file index : " + ParseByte.toHexString(fileSet.getBfIndex()) + " & word : "
+              + ParseByte.toHexString(fileSet.getBfIndex() & inputIndex) + ")" + ANSI_RESET);
         }
       }
 
