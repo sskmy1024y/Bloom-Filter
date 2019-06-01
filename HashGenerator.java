@@ -10,7 +10,7 @@ public class HashGenerator {
    * @throws NoSuchAlgorithmException
    */
   public static int generate(byte[] bytes) throws NoSuchAlgorithmException {
-    return MessageDigest.getInstance("SHA-256").digest(bytes)[0];
+    return MessageDigest.getInstance("SHA1").digest(bytes)[0];
   }
 
   /**
