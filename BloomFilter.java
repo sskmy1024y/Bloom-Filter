@@ -25,9 +25,10 @@ public class BloomFilter {
    * @param data
    * @throws NoSuchAlgorithmException
    */
-  public void add(String data) throws NoSuchAlgorithmException {
+  public void add(byte[] datas) throws NoSuchAlgorithmException {
     for (int i = 0; i < k; i++) {
-      int hash_value = HashGenerator.generate((i + data).getBytes()); // データにソルトを混ぜてハッシュ化
+      byte hash = (byte) i;
+      int hash_value = HashGenerator.generate(datas, hash); // データにソルトを混ぜてハッシュ化
       int adjust_hash_value = Math.abs(hash_value) % m; // ビット数の間のindex（0 - index - m）に修正
       bfindex = bfindex | pow(2, adjust_hash_value);
     }
@@ -46,7 +47,7 @@ public class BloomFilter {
    */
   public static long getBfIndex(String keyword) throws NoSuchAlgorithmException {
     BloomFilter bf = new BloomFilter();
-    bf.add(keyword);
+    bf.add(keyword.getBytes());
     return bf.getBfIndex();
   }
 

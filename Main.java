@@ -61,6 +61,7 @@ public class Main {
       System.out.print("Search Keyword Input > ");
       String input = scanner.nextLine();
       scanner.close();
+
       long inputIndex = BloomFilter.getBfIndex(input);
 
       System.out.println("\tInput keyword is : \t\t" + ANSI_CYAN + input + ANSI_RESET);

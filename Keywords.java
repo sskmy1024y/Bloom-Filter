@@ -20,7 +20,8 @@ class Keywords {
         keywords.add(str);
       }
     } catch (IOException e) {
-      throw new IOException();
+      System.out.println("[Error] IO Exception");
+      System.exit(1);
     }
   }
 
@@ -70,28 +71,20 @@ class Keywords {
       throw new IllegalArgumentException("`org` or `dest` is null.");
     }
 
-    if ((org.length == 0) || (dest.length == 0) // 長さが無いので比較しようが無い
-        || (org.length < dest.length)) // 探したい配列の方が長いので見つかるワケがない
-    {
+    if ((org.length == 0) || (dest.length == 0) || (org.length < dest.length))
       return false;
-    }
 
-    // 評価する限界値
     int limitIndex = org.length - dest.length + 1;
 
     for (int i = 0; i < limitIndex; i++) {
-      for (int j = 0; j < dest.length; j++) { // (A)
-        if (org[i + j] == dest[j]) { // (B)
-          // 最後まで一致したら戻り値に設定する
-          if (j == dest.length - 1) {
+      for (int j = 0; j < dest.length; j++) {
+        if (org[i + j] == dest[j]) {
+          if (j == dest.length - 1)
             return true;
-          }
-        } else {
+        } else
           break;
-        }
       }
     }
-    // 最後まで見つからなかった
     return false;
   }
 }

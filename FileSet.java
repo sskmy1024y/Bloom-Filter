@@ -57,7 +57,7 @@ class FileSet {
     // bfindexの登録
     this.bFilter = new BloomFilter();
     for (String keyword : Keywords.containKeywords(filebyte)) {
-      this.bFilter.add(keyword);
+      this.bFilter.add(keyword.getBytes());
     }
   }
 
