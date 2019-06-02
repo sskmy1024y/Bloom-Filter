@@ -27,8 +27,7 @@ public class BloomFilter {
    */
   public void add(byte[] datas) throws NoSuchAlgorithmException {
     for (int i = 0; i < k; i++) {
-      byte hash = (byte) i;
-      int hash_value = HashGenerator.generate(datas, hash); // データにソルトを混ぜてハッシュ化
+      int hash_value = HashGenerator.generate(datas, (byte) i); // データにソルトを混ぜてハッシュ化
       int adjust_hash_value = Math.abs(hash_value) % m; // ビット数の間のindex（0 - index - m）に修正
       bfindex = bfindex | pow(2, adjust_hash_value);
     }
@@ -52,17 +51,15 @@ public class BloomFilter {
   }
 
   /**
-   * 1番目の引数を、2番目の引数で累乗した値をint型で返す。
+   * 1番目の引数を、2番目の引数で累乗した値をlong型で返す。
    * 
    * @param num
    * @param n
    * @return
    */
-  private static int pow(int num, int n) {
-    if (n == 1) {
-      return num;
-    }
-    int ans = pow(num, n - 1) * num;
-    return ans;
+  private static long pow(int num, int n) {
+    if (n < 1)
+      return 1;
+    return pow(num, n - 1) * num;
   }
 }

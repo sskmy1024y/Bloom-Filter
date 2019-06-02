@@ -22,9 +22,11 @@ public class HashGenerator {
    * @throws NoSuchAlgorithmException
    */
   public static int generate(byte[] bytes, byte solt) throws NoSuchAlgorithmException {
-    byte[] temp = new byte[bytes.length + 1];
-    System.arraycopy(bytes, 0, temp, 0, bytes.length);
-    temp[bytes.length - 1] = solt;
-    return MessageDigest.getInstance("SHA1").digest(temp)[0];
+    byte[] soltByte = new byte[bytes.length + 1];
+    System.arraycopy(bytes, 0, soltByte, 0, bytes.length);
+    soltByte[bytes.length] = solt;
+    MessageDigest md = MessageDigest.getInstance("SHA-256");
+    md.update(soltByte);
+    return md.digest()[0];
   }
 }
